@@ -6,6 +6,7 @@ import { UsersController } from './users/users.controller';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UsersModule } from './users/users.module';
     PostsModule,
     UsersModule,
     AuthModule,
+    CommentsModule,
   ],
   // providers: [UsersService, AuthService],
   // controllers: [UsersController],
