@@ -1,5 +1,14 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToOne,
+} from 'typeorm';
 import { Comment } from 'src/comments/comment.entity';
+import { User } from 'src/users/user.entity';
 
 @Entity()
 export class Post {
@@ -11,6 +20,15 @@ export class Post {
 
   @Column()
   content: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
+
+  @ManyToOne(() => User, (user) => user.posts, { eager: true })
+  author: User;
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];

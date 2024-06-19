@@ -1,11 +1,28 @@
-import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Put,
+  Delete,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { Post as PostEntity } from './post.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { CreatePostDto } from './dto/create-post.dto';
 
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post()
+  create(@Body() createPostDto: CreatePostDto, @Request() req) {
+    return this.postsService.create(createPostDto, req.user);
+  }
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
@@ -15,14 +32,8 @@ export class PostsController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
-  findOne(@Param('id') id: number) {
-    return this.postsService.findOne(id);
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Post()
-  create(@Body() post: PostEntity) {
-    return this.postsService.create(post);
+  findOne(@Param('id') id: string) {
+    return this.postsService.findOne(+id);
   }
 
   @UseGuards(AuthGuard('jwt'))
