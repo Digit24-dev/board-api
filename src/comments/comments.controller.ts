@@ -6,6 +6,7 @@ import {
   Get,
   UseGuards,
   Request,
+  Delete,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
@@ -33,8 +34,15 @@ export class CommentsController {
     return this.commentsService.create(createCommentDto, user, post);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':postId')
   async findByPost(@Param('postId') postId: string) {
     return this.commentsService.findByPost(+postId);
+  }
+  
+  @UseGuards(JwtAuthGuard)
+  @Delete(':postId')
+  async remove() {
+
   }
 }
